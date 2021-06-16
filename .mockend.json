@@ -1,6 +1,5 @@
 {
-    "Grocery": {
-        "id":"string",
+    "Grocery": {        
         "title": "string",
         "description": "string",
         "picture": "string"
