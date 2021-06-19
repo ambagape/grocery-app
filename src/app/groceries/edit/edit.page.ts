@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { LoadingService } from 'src/app/commons/loading-service';
 import { ToastService } from 'src/app/commons/toast-service';
-import { GroceryService } from '../grocery.service';
+import { IGroceryService } from '../grocery.service';
 
 @Component({
   selector: 'app-edit',
@@ -27,7 +27,7 @@ export class EditPage {
     private activatedRoute: ActivatedRoute,
     private loadingService: LoadingService,
     private toastService: ToastService,
-    private groceryService: GroceryService) {
+    private groceryService: IGroceryService) {
   }
 
   async ngOnInit() {

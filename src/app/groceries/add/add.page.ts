@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
-import { Base64 } from '@ionic-native/base64/ngx';
 import { LoadingService } from 'src/app/commons/loading-service';
 import { ToastService } from 'src/app/commons/toast-service';
-import { GroceryService } from '../grocery.service';
+import { IGroceryService } from '../grocery.service';
 
 @Component({
   selector: 'app-add',
@@ -22,10 +21,9 @@ export class AddPage {
   });
 
   constructor(private nav: NavController,
-    private base64: Base64,
     private loadingService: LoadingService,
     private toastService: ToastService,
-    private groceryService: GroceryService) {
+    private groceryService: IGroceryService) {
 
   }
 

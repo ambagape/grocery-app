@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
+import { Component } from '@angular/core';
 import { LoadingService } from 'src/app/commons/loading-service';
 import { IGrocery } from 'src/app/models/grocery';
 import { IGroceryService } from '../grocery.service';

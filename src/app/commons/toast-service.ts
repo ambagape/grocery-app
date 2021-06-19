@@ -23,7 +23,21 @@ export class ToastService {
     return toast;
   }
 
-  async showError(message: string) {
+  handle(error: any) {
+    let message = '';
+    if (typeof (error) === 'string') {
+      message = error;
+    } else if (error instanceof Error) {
+      message = error.message;
+    }
+    return this.showError(message);
+  }
+
+  dismissToast() {
+    this.toastCtrl.dismiss();
+  }
+
+  private async showError(message: string) {
     const toast = await this.toastCtrl.create({
       message: message,
       header: 'Error',
@@ -43,19 +57,5 @@ export class ToastService {
     await toast.present();
 
     return toast;
-  }
-
-  handle(error: any) {
-    let message = '';    
-    if (typeof (error) === 'string') {
-      message = error;
-    } else if (error instanceof Error) {
-      message = error.message;
-    }                
-    return this.showError(message);
-  }
-
-  dismissToast() {
-    this.toastCtrl.dismiss();
   }
 }

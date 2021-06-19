@@ -7,7 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { ShowPageRoutingModule } from './show-routing.module';
 
 import { ShowPage } from './show.page';
-import { IGroceryService, GroceryService } from '../grocery.service';
+import { IGroceryService } from '../grocery.service';
+
 
 @NgModule({
   imports: [
@@ -15,10 +16,7 @@ import { IGroceryService, GroceryService } from '../grocery.service';
     FormsModule,
     IonicModule,
     ShowPageRoutingModule
-  ],
-  providers: [
-    { provide: IGroceryService, useClass: GroceryService }
-  ],
+  ],  
   declarations: [ShowPage]
 })
 export class ShowPageModule {}

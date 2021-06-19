@@ -1,7 +1,7 @@
 import { TestBed } from "@angular/core/testing";
 import { IonicStorageModule, Storage } from "@ionic/storage-angular";
 import { IGrocery } from "../models/grocery";
-import { GroceryService, IGroceryService } from "./grocery.service";
+import { IGroceryService } from "./grocery.service";
 
 describe('GroceryServiceTest', () => {
 
@@ -23,16 +23,14 @@ describe('GroceryServiceTest', () => {
                 }
             }                    
         };        
-        
-      
+              
         TestBed.configureTestingModule({
             imports:[IonicStorageModule.forRoot()],
-            providers: [
-                { provide: IGroceryService, useClass: GroceryService },
-                { provide: Storage, useValue: mockLocalStorage}
+            providers: [ 
+                { provide: Storage, useValue: mockLocalStorage},
             ]
         });
-        groceryService = TestBed.inject(GroceryService);
+        groceryService = TestBed.inject(IGroceryService);
         
     });  
 
@@ -76,8 +74,7 @@ describe('GroceryServiceTest', () => {
         expect(savedGrocery).toEqual(markedGrocery.get());
         markedGrocery = await groceryService.toggleGrocerySelection(savedGrocery.id);
         savedGrocery.isMarked = false;
-        expect(savedGrocery).toEqual(markedGrocery.get());              
-           
+        expect(savedGrocery).toEqual(markedGrocery.get());                         
     });
 });
 

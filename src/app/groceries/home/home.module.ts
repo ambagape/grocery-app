@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { HomePageRoutingModule } from './home-routing.module';
 
 import { HomePage } from './home.page';
-import { IGroceryService, GroceryService } from '../grocery.service';
 
 @NgModule({
   imports: [
@@ -16,9 +15,7 @@ import { IGroceryService, GroceryService } from '../grocery.service';
     IonicModule,
     HomePageRoutingModule
   ],
-  providers: [
-    { provide: IGroceryService, useClass: GroceryService }
-  ],
+ 
   declarations: [HomePage]
 })
 export class HomePageModule {}
