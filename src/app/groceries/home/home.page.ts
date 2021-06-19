@@ -9,7 +9,7 @@ import { IGroceryService } from '../grocery.service';
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-export class HomePage implements OnInit {
+export class HomePage {
 
   private groceries: Array<IGrocery> = [];
 
@@ -18,9 +18,9 @@ export class HomePage implements OnInit {
     speed: 400
   };
 
-  constructor(private service: IGroceryService, private loadingService: LoadingService) { }
+  constructor(private service: IGroceryService, private loadingService: LoadingService) { }  
 
-  ngOnInit() {
+  ionViewWillEnter(){
     this.init();
   }
 
