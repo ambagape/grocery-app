@@ -1,17 +1,20 @@
 import { Injectable } from "@angular/core";
 import { IGrocery } from "../models/grocery";
-import { v1 as uuid } from 'uuid';
 import { Storage } from '@ionic/storage-angular';
+import { Optional } from "typescript-optional";
 
+export const STORAGE_ID: string = "grocerydb";
 
 @Injectable()
 export abstract class IGroceryService {
 
-    abstract addGrocery(grocery: IGrocery): IGrocery
+    abstract addGrocery(grocery: IGrocery): Promise<IGrocery>
 
-    abstract toggleGrocerySelection(id: string): void
+    abstract toggleGrocerySelection(id: number): Promise<Optional<IGrocery>>
 
-    abstract findGrocery(id: string): Promise<IGrocery>
+    abstract findGrocery(id: number): Promise<Optional<IGrocery>>
+
+    abstract getGroceries(): Promise<IGrocery[]>
 
 }
 
@@ -22,57 +25,83 @@ export class GroceryService implements IGroceryService {
 
     private groceryApi: GroceryApi;
 
-    constructor(private storage: Storage) {
-        this.groceryApi = new GroceryApi(this.storage);
+    constructor(storage: Storage) {
+        this.groceryApi = new GroceryApi(storage);
     }
-
-    findGrocery(id: string): Promise<IGrocery> {
+  
+    async findGrocery(id: number): Promise<Optional<IGrocery>> {
+        await this.groceryApi.init();
         return this.groceryApi.findGrocery(id);
     }
 
-    addGrocery(grocery: IGrocery): IGrocery {
+    async updateGrocery(grocery:IGrocery){
+        await this.groceryApi.init();
+        return this.groceryApi.updateGrocery(grocery);
+    }
+
+    async addGrocery(grocery: IGrocery): Promise<IGrocery> {
+        await this.groceryApi.init();
         return this.groceryApi.addGrocery(grocery);
     }
 
-    toggleGrocerySelection(id: string): void {
-        this.findGrocery(id).then(grocery => {
-            grocery.isMarked = !grocery.isMarked;
-            this.groceryApi.updateGrocery(grocery);
-        })
+    async getGroceries(): Promise<IGrocery[]>{
+        await this.groceryApi.init();
+        return this.groceryApi.getAllGroceries();
     }
 
+    async toggleGrocerySelection(id: number): Promise<Optional<IGrocery>> {
+        const grocery: IGrocery = (await this.findGrocery(id)).orElseThrow(() => new Error("item not found"));
+        grocery.isMarked = !grocery.isMarked;  
+        await this.groceryApi.updateGrocery(grocery);                                   
+        return Optional.of(grocery);      
+    }
 }
 
-class GroceryApi {
 
-    private _storage: Storage | null = null;
+class GroceryApi {           
+
+    private _storage: Storage | null = null;    
 
     constructor(private storage: Storage) {
-        this.init();
     }
 
     async init() {
         const storage = await this.storage.create();
         this._storage = storage;
-    }
+    }    
 
-    addGrocery(grocery: IGrocery): IGrocery {
-        grocery.id = uuid();
-        this._storage.set(grocery.id, grocery);
+    async addGrocery(grocery: IGrocery): Promise<IGrocery> {        
+        const list: IGrocery[] = await this.getAllGroceries();
+        grocery.isMarked = false;
+        grocery.id = list.length + 1;
+        list.push(grocery);
+        await this._storage.set(STORAGE_ID, list);        
         return grocery;
     }
 
-    updateGrocery(grocery: IGrocery): void {
-        this.findGrocery(grocery.id).then(savedGrocery => {
+    async updateGrocery(grocery: IGrocery): Promise<void> {
+        let optionalGrocery = await this.findGrocery(grocery.id);
+        const groceryList: IGrocery[] = await this.getAllGroceries();
+        optionalGrocery.ifPresent(async savedGrocery => {
             savedGrocery.description = grocery.description;
             savedGrocery.picture = grocery.picture;
             savedGrocery.title = grocery.title;
-            this._storage.set(grocery.id, savedGrocery);
-        });
+            savedGrocery.isMarked = grocery.isMarked            
+            groceryList[grocery.id - 1] = savedGrocery;
+        });         
+        return await this._storage.set(STORAGE_ID, groceryList );
     }
 
-    findGrocery(id: string): Promise<IGrocery> {
-        return this._storage.get(id);
+    async findGrocery(id: number): Promise<Optional<IGrocery>> {        
+        let result: IGrocery[] =  (await this.getAllGroceries()).filter(i => {
+            return i.id === id
+        });        
+        return Optional.ofNullable(result.pop());
+    }
+
+    async getAllGroceries(): Promise<IGrocery[]> {
+        const db = await this._storage.get(STORAGE_ID);
+        return db? db : [];
     }
 
 }

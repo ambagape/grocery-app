@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Add Grocery</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="form" (submit)="onSubmit()">
+    <ion-item>
+      <ion-input formControlName="title" placeholder="Title"></ion-input>
+      <ion-text color="danger" *ngIf="title.invalid && (title.dirty || title.touched)">
+          <div *ngIf="title.errors.required">Title is required.</div>
+      </ion-text>
+    </ion-item>    
+    <ion-item>
+      <ion-textarea formControlName="description" placeholder="Description"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-input type="file" formControlName="picture" placeholder="Upload picture" (change)="handleUpload($event)"></ion-input>
+      <ion-text color="danger" *ngIf="picture.invalid && (picture.dirty || picture.touched)">
+          <div *ngIf="picture.errors.required">Picure is required.</div>
+      </ion-text>
+    </ion-item>  
+    <ion-item *ngIf="loadedPicture">
+      <ion-thumbnail slot="start">
+          <ion-img [src]="loadedPicture"></ion-img>
+      </ion-thumbnail>
+    </ion-item>
+    <ion-button [disabled]="form.invalid" expand="block" type="submit" color="primary">Submit</ion-button>    
+  </form>  
+
+</ion-content>

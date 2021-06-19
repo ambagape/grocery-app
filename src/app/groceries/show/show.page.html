@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Show Grocery</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-item>
+      <ion-label>ID:</ion-label>
+      <ion-text>{{grocery.id}}</ion-text>     
+    </ion-item>
+    <ion-item>
+      <ion-label>Title:</ion-label>
+      <ion-text>{{grocery.title}}</ion-text>     
+    </ion-item>
+    <ion-item>
+      <ion-label>Description:</ion-label>
+      <ion-text> {{grocery.description}} </ion-text>   
+    </ion-item>
+    <ion-item>
+        <ion-label>Selected?:</ion-label>
+        <ion-checkbox checked="{{grocery.isMarked}}" (click)="toggleItemSelection()"></ion-checkbox>
+    </ion-item>
+                      
+    <ion-item *ngIf="grocery.picture">
+        <ion-img [src]="grocery.picture"></ion-img>          
+    </ion-item>  
+    
+    <ion-button expand="block" type="button" color="primary" (click)="goToEdit(grocery.id)">Edit Grocery</ion-button>    
+</ion-content>

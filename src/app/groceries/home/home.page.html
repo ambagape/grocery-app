@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Groceries</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="ion-padding" scroll-y="false">
+  <ion-slides pager="true" [options]="slideOpts" *ngIf="groceries.length > 0; else elseBlock">
+    <ion-slide *ngFor="let grocery of groceries">
+    <a routerLink="/show/{{grocery.id}}">
+      <div class="slide">
+          <h1>{{grocery.title}}</h1>
+          <p><ion-img [src]="grocery.picture"></ion-img></p>
+          <ion-checkbox slot="end" checked="{{grocery.isMarked}}"></ion-checkbox>
+      </div>   
+      </a>  
+    </ion-slide>    
+  </ion-slides>
+  <ng-template fullscreen class="ion-padding"  #elseBlock>
+  <div>There's no Item yet. <a routerLink="/add">Click here</a> to add an Item</div>
+</ng-template>
+   
+</ion-content>
+

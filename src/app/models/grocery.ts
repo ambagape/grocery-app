@@ -1,10 +1,10 @@
 export interface IGrocery {
 
-    id: string;
+    id: number;
 
     title: string;
 
-    isMarked: Boolean;
+    isMarked: boolean;
 
     description?: string;
 
