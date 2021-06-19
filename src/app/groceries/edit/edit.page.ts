@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { LoadingService } from 'src/app/commons/loading-service';
-import { ToastService } from 'src/app/commons/toast-service.service';
+import { ToastService } from 'src/app/commons/toast-service';
 import { GroceryService } from '../grocery.service';
 
 @Component({
