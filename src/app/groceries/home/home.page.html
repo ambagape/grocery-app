@@ -5,8 +5,8 @@
 </ion-header>
 
 <ion-content fullscreen class="ion-padding" scroll-y="false">
-  <ion-slides pager="true" [options]="slideOpts" *ngIf="groceries.length > 0; else elseBlock">
-    <ion-slide *ngFor="let grocery of groceries">
+  <ion-slides pager="true" [options]="slideOpts" *ngIf="_groceries.length > 0; else elseBlock">
+    <ion-slide *ngFor="let grocery of _groceries">
     <a routerLink="/show/{{grocery.id}}">
       <div class="slide">
           <h1>{{grocery.title}}</h1>

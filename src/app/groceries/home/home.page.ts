@@ -10,7 +10,7 @@ import { IGroceryService } from '../grocery.service';
 })
 export class HomePage {
 
-  private groceries: Array<IGrocery> = [];
+  private _groceries: Array<IGrocery> = [];
 
   slideOpts = {
     initialSlide: 1,
@@ -25,8 +25,11 @@ export class HomePage {
 
   async init(){
     const loading = this.loadingService.start();
-    this.groceries = await this.service.getGroceries();
+    this._groceries = await this.service.getGroceries();
     (await loading).dismiss();
   }
 
+  get groceries(){
+    return this._groceries;
+  };
 }

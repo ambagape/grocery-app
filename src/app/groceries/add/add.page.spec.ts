@@ -34,4 +34,28 @@ describe('AddPage', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  /*it('should convert file to base64', () => {
+    let event = {target: {files : ['']}};    
+    const sampleBase64Data = 'samplebase_64_data';
+    let jDummy: jasmine.SpyObj<FileReader>  = jasmine
+          .createSpyObj('FileReader',['readAsDataUrl'],{result:sampleBase64Data});    
+    component.handleUploadWithCallback(event, jDummy, ( reader, loading)=>{
+      expect(reader).toBeTruthy();
+      expect(reader.result).toEqual(sampleBase64Data);      
+    });
+  });*/
+
+  it('should add grocery',async ()=>{
+    const grocery =  {
+      id : null,
+      isMarked: false,
+      title: "the title",
+      description: 'the description',
+      picture:'base64url'
+    }
+    component.form.setValue(grocery);
+    await component.onSubmit();
+    expect(groceryServiceSpy.addGrocery).toHaveBeenCalledOnceWith(grocery);
+  });
 });

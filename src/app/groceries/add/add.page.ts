@@ -12,7 +12,7 @@ import { IGroceryService } from '../grocery.service';
 })
 export class AddPage {
   
-  private loadedPicture: string | ArrayBuffer;
+  private _loadedPicture: string | ArrayBuffer;
 
   form: FormGroup = new FormGroup({
     title: new FormControl('', Validators.required),
@@ -27,18 +27,21 @@ export class AddPage {
 
   }
 
-  handleUpload(event: any) {
+  handleUploadWithCallback(event: any, reader: FileReader, callback: any) {
     this.loadingService.start("Uploading image").then((loading)=>{
-      let file = event.target.files[0];
-      const reader = new FileReader();
+      let file = event.target.files[0];      
       reader.readAsDataURL(file);
-      reader.onload = () => {          
-          this.form.patchValue({picture: reader.result});
-          this.loadedPicture = reader.result;          
-          loading.dismiss();
-      };
+      reader.onload = callback(reader, loading);
     });
     
+  }
+
+  handleUpload(event: any){
+    this.handleUploadWithCallback(event, new FileReader(), ( reader, loading)=>{
+      this.form.patchValue({picture: reader.result});
+      this._loadedPicture = reader.result;          
+      loading.dismiss();
+    });
   }
   
   async onSubmit() {
@@ -64,4 +67,7 @@ export class AddPage {
     return this.form.get("title");
   }
   
+  get loadedPicture(){
+    return this.loadedPicture;
+  }
 }

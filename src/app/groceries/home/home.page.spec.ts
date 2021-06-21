@@ -35,4 +35,9 @@ describe('HomePage', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should load groceries', async ()=>{
+    await component.init();    
+    expect(component.groceries.length).toBe(1);
+  });
 });
