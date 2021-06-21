@@ -27,21 +27,18 @@ export class AddPage {
 
   }
 
-  handleUploadWithCallback(event: any, reader: FileReader, callback: any) {
-    this.loadingService.start("Uploading image").then((loading)=>{
-      let file = event.target.files[0];      
+  handleUpload(event: any) {
+    this.loadingService.start("Uploading image").then((loading) => {
+      let file = event.target.files[0];
+      const reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onload = callback(reader, loading);
+      reader.onload = () => {
+        this.form.patchValue({ picture: reader.result });
+        this._loadedPicture = reader.result;
+        loading.dismiss();
+      };
     });
-    
-  }
 
-  handleUpload(event: any){
-    this.handleUploadWithCallback(event, new FileReader(), ( reader, loading)=>{
-      this.form.patchValue({picture: reader.result});
-      this._loadedPicture = reader.result;          
-      loading.dismiss();
-    });
   }
   
   async onSubmit() {

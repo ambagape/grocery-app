@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
+import { FileUploadService } from 'src/app/commons/file-upload.service';
 import { LoadingService } from 'src/app/commons/loading-service';
 import { ToastService } from 'src/app/commons/toast-service';
 import { IGroceryService } from '../grocery.service';
@@ -27,7 +28,8 @@ export class EditPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private loadingService: LoadingService,
     private toastService: ToastService,
-    private groceryService: IGroceryService) {
+    private groceryService: IGroceryService,
+    private fileUploadService: FileUploadService) {
   }
 
   async ngOnInit() {
