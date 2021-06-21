@@ -12,10 +12,11 @@ describe('ShowPage', () => {
   let component: ShowPage;
   let fixture: ComponentFixture<ShowPage>;
   let groceryServiceSpy: jasmine.SpyObj<IGroceryService>;
+  let grocery: IGrocery;
 
 
   beforeEach(waitForAsync(() => {
-    const grocery: IGrocery = { id: 1, isMarked: false, title: 'the title' };
+    grocery = { id: 1, isMarked: false, title: 'the title' };
     groceryServiceSpy = jasmine.createSpyObj('IGroceryService', ['findGrocery', 'toggleGrocerySelection']);
     groceryServiceSpy.findGrocery.and.returnValue(new Promise<Optional<IGrocery>>((resolve, reject) => resolve(Optional.of(grocery))));
     groceryServiceSpy.toggleGrocerySelection.and.returnValue(new Promise<Optional<IGrocery>>((resolve, reject) => resolve(Optional.of(grocery))));
@@ -38,4 +39,6 @@ describe('ShowPage', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+ 
+    
 });

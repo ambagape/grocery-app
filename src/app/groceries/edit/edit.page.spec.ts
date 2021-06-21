@@ -14,9 +14,10 @@ describe('EditPage', () => {
   let fixture: ComponentFixture<EditPage>;
   let navCtrl : any;
   let groceryServiceSpy: jasmine.SpyObj<IGroceryService>;
+  let grocery: IGrocery;
 
   beforeEach(waitForAsync(() => {
-    const grocery: IGrocery = {id:1,isMarked:false,title:'the title'};
+    grocery = {id:1,isMarked:false,title:'the title',description:'description',picture:'picture'};
     groceryServiceSpy = jasmine.createSpyObj('IGroceryService',['findGrocery','updateGrocery']);
     groceryServiceSpy.findGrocery.and.returnValue(new Promise<Optional<IGrocery>>((resolve,reject)=> resolve(Optional.of(grocery))));
     groceryServiceSpy.updateGrocery.and.returnValue(new Promise<void>((resolve,reject)=> resolve(null)));
@@ -35,10 +36,18 @@ describe('EditPage', () => {
 
     fixture = TestBed.createComponent(EditPage);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    fixture.detectChanges();    
   }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should edit item', async ()=>{
+    grocery.title = "new title";
+    component.form.setValue(grocery);
+    await component.onSubmit();
+    expect(groceryServiceSpy.updateGrocery).toHaveBeenCalledOnceWith(grocery);
+  });
+  
 });

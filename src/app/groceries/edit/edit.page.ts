@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
@@ -11,14 +11,14 @@ import { IGroceryService } from '../grocery.service';
   templateUrl: './edit.page.html',
   styleUrls: ['./edit.page.scss'],
 })
-export class EditPage {
+export class EditPage implements OnInit {
 
   private loadedPicture: string| ArrayBuffer;
 
   form: FormGroup = new FormGroup({
     id: new FormControl('', Validators.required),
     title: new FormControl('', Validators.required),
-    picture: new FormControl('', Validators.required),
+    picture: new FormControl(),
     description: new FormControl(),
     isMarked: new FormControl('',Validators.required)
   });

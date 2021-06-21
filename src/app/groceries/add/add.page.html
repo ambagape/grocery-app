@@ -30,9 +30,9 @@
       <ion-input type="file" formControlName="picture" placeholder="Upload picture" (change)="handleUpload($event)"></ion-input>
       <ion-icon color="primary" name="image-outline" slot="end"></ion-icon>
     </ion-item>  
-    <ion-item *ngIf="loadedPicture">
+    <ion-item *ngIf="_loadedPicture">
       <ion-thumbnail slot="start">
-          <ion-img [src]="loadedPicture"></ion-img>
+          <ion-img [src]="_loadedPicture"></ion-img>
       </ion-thumbnail>
     </ion-item>
     </ion-list>

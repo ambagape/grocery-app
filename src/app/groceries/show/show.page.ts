@@ -12,7 +12,7 @@ import { IGroceryService } from '../grocery.service';
 })
 export class ShowPage {
 
-  private grocery: any = {};
+  private _grocery: any = {};
 
   constructor(
     private nav: NavController,
@@ -27,22 +27,20 @@ export class ShowPage {
       const id: number = Number.parseInt(this.activatedRoute.snapshot.params.id);
       let optionalGrocery = await this.groceryService.findGrocery(id);
       optionalGrocery.ifPresentOrElse(retrievedGrocery => {
-        this.grocery = retrievedGrocery;
+        this._grocery = retrievedGrocery;
       }, () => this.toastService.show("No such item"));
     } catch (e) {
       this.toastService.handle(e);
     } finally {
       loading.dismiss();
     }
-
   }
-
-
+  
   async toggleItemSelection() {
-    let loading = this.loadingService.start("Updating item...");
+    let loading = await this.loadingService.start("Updating item...");
     try {
       let toggledGrocery = await this.groceryService.toggleGrocerySelection(this.grocery.id);
-      toggledGrocery.ifPresent(item => this.grocery = item);
+      toggledGrocery.ifPresent(item => this._grocery = item);      
     } catch (e) {
       this.toastService.handle(e);
     } finally {
@@ -54,4 +52,7 @@ export class ShowPage {
     this.nav.navigateForward(`/edit/${id}`)
   }
 
+  get grocery(){
+    return this._grocery;
+  }
 }

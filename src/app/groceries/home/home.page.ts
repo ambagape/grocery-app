@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { LoadingService } from 'src/app/commons/loading-service';
+import { ToastService } from 'src/app/commons/toast-service';
 import { IGrocery } from 'src/app/models/grocery';
 import { IGroceryService } from '../grocery.service';
 
@@ -17,19 +18,31 @@ export class HomePage {
     speed: 400
   };
 
-  constructor(private service: IGroceryService, private loadingService: LoadingService) { }  
+  constructor(private service: IGroceryService, private loadingService: LoadingService, private toastService: ToastService) { }
 
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this.init();
   }
 
-  async init(){
+  async init() {
     const loading = this.loadingService.start();
     this._groceries = await this.service.getGroceries();
     (await loading).dismiss();
   }
 
-  get groceries(){
+  async toggleItemSelection(id) {
+    let loading = await this.loadingService.start("Updating item...");
+    try {
+      await this.service.toggleGrocerySelection(id);
+      await this.service.getGroceries();
+    } catch (e) {
+      this.toastService.handle(e);
+    } finally {
+      (await loading).dismiss();
+    }
+  }
+
+  get groceries() {
     return this._groceries;
   };
 }

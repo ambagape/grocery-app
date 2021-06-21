@@ -68,6 +68,6 @@ export class AddPage {
   }
   
   get loadedPicture(){
-    return this.loadedPicture;
+    return this._loadedPicture;
   }
 }
